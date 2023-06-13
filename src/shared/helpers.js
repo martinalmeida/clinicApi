@@ -4,7 +4,7 @@ const http = require("axios");
  * @param {*} messages 
  * @returns 
  */
-exports.GetTextUser = (messages) => {
+exports.GetTextUser = async (messages) => {
     let text = "";
     let typeMessge = messages["type"];
 
@@ -18,16 +18,12 @@ exports.GetTextUser = (messages) => {
             let data = JSON.stringify({
                 "messaging_product": "whatsapp",
                 "to": "573182834018",
-                "type": "template",
-                "template": {
-                    "name": "Hola, señor locutor",
-                    "language": {
-                        "code": "es_ES"
-                    }
+                "text": {
+                    "body": "Hola señor locutor :)"
                 }
             });
 
-            http.post(url, data, {
+            const request = await http.post(url, data, {
                 headers: {
                     "Authorization": "Bearer " + process.env.TOKEN_FACEBOOK
                 }
