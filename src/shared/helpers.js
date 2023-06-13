@@ -23,10 +23,12 @@ exports.GetTextUser = async (messages) => {
                 }
             });
 
-            const request = await http.post(url, data, {
+            const request = await http.post(url, {
                 headers: {
+                    "Content-Type": "application/json",
                     "Authorization": "Bearer " + process.env.TOKEN_FACEBOOK
-                }
+                },
+                data
             });
 
         }
