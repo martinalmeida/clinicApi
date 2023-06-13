@@ -32,7 +32,6 @@ exports.veryfyWehook = (req, res) => {
  */
 exports.webhook = (req, res) => {
     try {
-        console.log(JSON.stringify(req.body));
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
         let value = changes["value"];

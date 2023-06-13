@@ -1,3 +1,4 @@
+const http = require("axios");
 /**
  * @description Metodo para obtener el mensaje en tipo texto de la peticion de WhatsApp
  * @param {*} messages 
@@ -13,7 +14,25 @@ exports.GetTextUser = (messages) => {
         text = (messages["text"])["body"];
 
         if (text == "hola") {
-            console.log("esto es un saludo del cliente");
+            let url = "https://graph.facebook.com/v17.0/113738338413456/messages";
+            let data = JSON.stringify({
+                "messaging_product": "whatsapp",
+                "to": "573182834018",
+                "type": "template",
+                "template": {
+                    "name": "Hola, señor locutor",
+                    "language": {
+                        "code": "es_ES"
+                    }
+                }
+            });
+
+            http.post(url, data, {
+                headers: {
+                    "Authorization": "Bearer " + process.env.TOKEN_FACEBOOK
+                }
+            });
+
         }
     }
 
