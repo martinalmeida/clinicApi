@@ -6,9 +6,17 @@
 exports.GetTextUser = (messages) => {
     let text = "";
     let typeMessge = messages["type"];
+
+    // Si es un mensaje de tipo etxto
     if (typeMessge == "text") {
+
         text = (messages["text"])["body"];
+
+        if (text == "hola") {
+            console.log("esto es un saludo del cliente");
+        }
     }
+
     else if (typeMessge == "interactive") {
 
         let interactiveObject = messages["interactive"];
