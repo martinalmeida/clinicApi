@@ -17,7 +17,7 @@ exports.GetTextUser = async (messages) => {
             let url = "https://graph.facebook.com/v17.0/113738338413456/messages";
             let data = JSON.stringify({
                 "messaging_product": "whatsapp",
-                "to": "573182834018",
+                "to": "+573182834018",
                 "text": {
                     "body": "Hola señor locutor :)"
                 }
