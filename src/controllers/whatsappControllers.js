@@ -1,9 +1,14 @@
 const fs = require("fs");
 const myConsole = new console.Console(fs.createWriteStream("./logs.txt"));
 const processMessage = require("../shared/processMessage");
+const helpers = require("../shared/helpers");
 
-const VerifyToken = (req, res) => {
-
+/**
+ * @description Metodo para validar webhook desde Facebook
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.veryfyWehook = (req, res) => {
     try {
         let accessToken = process.env.TOKEN_VERIFY;
         let token = req.query["hub.verify_token"];
@@ -20,7 +25,12 @@ const VerifyToken = (req, res) => {
     }
 }
 
-const ReceivedMessage = (req, res) => {
+/**
+ * @description Metodo para procesar los mensajes
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.webhook = (req, res) => {
     try {
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
@@ -31,7 +41,8 @@ const ReceivedMessage = (req, res) => {
             let messages = messageObject[0];
             let number = messages["from"];
 
-            let text = GetTextUser(messages);
+            console.log(req.body);
+            let text = helpers.GetTextUser(messages);
 
             if (text != "") {
                 processMessage.Process(text, number);
@@ -44,34 +55,4 @@ const ReceivedMessage = (req, res) => {
         myConsole.log(e);
         res.send("EVENT_RECEIVED");
     }
-}
-
-function GetTextUser(messages) {
-    let text = "";
-    let typeMessge = messages["type"];
-    if (typeMessge == "text") {
-        text = (messages["text"])["body"];
-    }
-    else if (typeMessge == "interactive") {
-
-        let interactiveObject = messages["interactive"];
-        let typeInteractive = interactiveObject["type"];
-
-        if (typeInteractive == "button_reply") {
-            text = (interactiveObject["button_reply"])["title"];
-        }
-        else if (typeInteractive == "list_reply") {
-            text = (interactiveObject["list_reply"])["title"];
-        } else {
-            myConsole.log("sin mensaje");
-        }
-    } else {
-        myConsole.log("sin mensaje");
-    }
-    return text;
-}
-
-module.exports = {
-    VerifyToken,
-    ReceivedMessage
 }
