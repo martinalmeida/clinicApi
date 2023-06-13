@@ -12,30 +12,39 @@ exports.GetTextUser = async (messages) => {
     if (typeMessge == "text") {
 
         text = (messages["text"])["body"];
+        let message = "";
 
-        if (text == "hola") {
+        if (text.includes("Hola") || text.includes("hola") || text.includes("ola")) {
+            message = "Hola, buen día, escribe 1 si deseas agendar una cita envia, escribe 2 si deseas salir 😁"
+        }
 
+        if (text == "1") {
+            message = "Gracias por agendar tu cita con nosotros. ❤️"
+        }
+
+        if (text == "2") {
+            message = "Adios vuelve pronto 😊."
+        }
+
+        // peticion https
+        try {
             let url = "https://graph.facebook.com/v17.0/113738338413456/messages";
             let data = {
                 "messaging_product": "whatsapp",
                 "to": "+573182834018",
                 "text": {
-                    "body": "Hola señor locutor :)"
+                    "body": message
                 }
             };
-
-            try {
-                const response = await axios.post(url, data, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + process.env.TOKEN_FACEBOOK
-                    }
-                });
-                console.log(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-
+            const response = await axios.post(url, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + process.env.TOKEN_FACEBOOK
+                }
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
         }
     }
 
